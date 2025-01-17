@@ -1,3 +1,3 @@
 const User = require("./user");
-
-module.exports = { User };
+const Song = require("./songs");
+module.exports = { User, Song };

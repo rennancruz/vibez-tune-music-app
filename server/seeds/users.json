@@ -1,0 +1,14 @@
+[
+  {
+    "username": "testUser1",
+    "email": "test1@example.com",
+    "password": "password123",
+    "songs": []
+  },
+  {
+    "username": "testUser2",
+    "email": "test2@example.com",
+    "password": "securepassword456",
+    "songs": []
+  }
+]

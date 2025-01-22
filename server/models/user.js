@@ -26,10 +26,10 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  songs: [
+  song: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Songs",
+      ref: "Song",
     },
   ],
 });

@@ -1,8 +1,8 @@
 import { useState } from "react";
-const bcrypt = require("bcrypt");
+
 // Here we import a helper function that will check if the email is valid
 import { checkPassword, validateEmail } from "../utils/helpers";
-import User from "../../../server/models/user";
+//import User from "../../../server/models/user";
 
 function Login() {
   // Create state variables for the fields in the form
@@ -28,16 +28,12 @@ function Login() {
     }
   };
 
-  const handleFormSubmit = (e) => {
-    // Preventing the default behavior of the form submit (which is to refresh the page)
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
 
-    // First we check to see if the email is not valid or if the userName is empty. If so we set an error message to be displayed on the page.
     if (!validateEmail(email) || !userName) {
       setErrorMessage("Email or username is invalid");
-      // We want to exit out of this code block if something is wrong so that the user can correct it
       return;
-      // Then we check to see if the password is not valid. If so, we set an error message regarding the password.
     }
     if (!checkPassword(password)) {
       setErrorMessage(
@@ -45,17 +41,41 @@ function Login() {
       );
       return;
     }
-    alert(`Hello ${userName}`);
 
-    // If everything goes according to plan, we want to clear out the input after a successful registration.
-    setUserName("");
-    setPassword("");
-    setEmail("");
+    // Prepare user data to send to the server
+    const userData = {
+      email,
+      userName,
+      password,
+    };
+
+    try {
+      // Send a POST request to your server to create a new user
+      const response = await fetch("/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        // Handle successful registration
+        alert(`Hello ${userName}`);
+        setUserName("");
+        setPassword("");
+        setEmail("");
+      } else {
+        // Handle errors from the server
+        const errorData = await response.json();
+        setErrorMessage(
+          errorData.message || "An error occurred during registration."
+        );
+      }
+    } catch (error) {
+      setErrorMessage("Failed to connect to the server.");
+    }
   };
-
-  User.create({
-    username: "",
-  });
 
   return (
     <div className="container text-center">

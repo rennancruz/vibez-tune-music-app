@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Playlist from "./components/Playlist";
 import Search from "./components/Search";
 import Lyrics from "./components/Lyrics";
+import Login from "./Pages/Login";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Search />} />
           <Route path="/playlist" element={<Playlist />} />
           <Route path="/lyrics" element={<Lyrics />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </Router>
     </ApolloProvider>

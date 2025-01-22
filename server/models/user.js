@@ -6,7 +6,7 @@ const validateEmail = (email) => {
   return regex.test(email);
 };
 
-const UserShema = new Schema({
+const UserSchema = new Schema({
   username: {
     type: String,
     required: true,
@@ -20,21 +20,20 @@ const UserShema = new Schema({
       /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
       "Please fill a valid email address",
     ],
-    maxlength: 50, // Changed to maxlength
+    maxlength: 50,
   },
   password: {
     type: String,
     required: true,
-    unique: true,
   },
   songs: [
     {
-      type: Schema.Types.String,
-      ref: "songs",
+      type: Schema.Types.ObjectId,
+      ref: "Songs",
     },
   ],
-  toJSON: {
-    virtuals: true,
-  },
 });
-const User = model("User", UserShema);
+
+const User = model("User", UserSchema);
+
+module.exports = User;

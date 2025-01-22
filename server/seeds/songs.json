@@ -1,0 +1,17 @@
+[
+    {
+      "songTitle": "Imagine",
+      "artistName": "John Lennon",
+      "album": "Imagine"
+    },
+    {
+      "songTitle": "Bohemian Rhapsody",
+      "artistName": "Queen",
+      "album": "A Night at the Opera"
+    },
+    {
+      "songTitle": "Hotel California",
+      "artistName": "Eagles",
+      "album": "Hotel California"
+    }
+  ]

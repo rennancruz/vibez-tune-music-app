@@ -1,8 +1,8 @@
 import { useState } from "react";
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 // Here we import a helper function that will check if the email is valid
 import { checkPassword, validateEmail } from "../utils/helpers";
-import User from "../../../server/models/user";
+// import User from "../../../server/models/user";
 
 function Login() {
   // Create state variables for the fields in the form
@@ -52,10 +52,6 @@ function Login() {
     setPassword("");
     setEmail("");
   };
-
-  User.create({
-    username: "",
-  });
 
   return (
     <div className="container text-center">

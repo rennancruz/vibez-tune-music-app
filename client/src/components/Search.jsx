@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 
+import { css } from "@emotion/react";
+
 const SEARCH_MUSIC = gql`
   query searchMusic($term: String!) {
     searchMusic(term: $term) {
@@ -43,9 +45,50 @@ function Search() {
     addToPlaylist({ variables: track });
     alert(`${track.trackName} added to playlist!`);
   };
+  const styles = {
+    container: css`
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f0f4f8;
+      text-align: center;
+    `,
+    title: css`
+      font-size: 2.5rem;
+      color: #333;
+      margin-bottom: 20px;
+    `,
+    subtitle: css`
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 40px;
+    `,
+    button: css`
+      padding: 10px 20px;
+      font-size: 1rem;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
 
+      &:hover {
+        background-color: #0056b3;
+      }
+    `,
+  };
   return (
     <div>
+      <div css={styles.container}>
+        <h1 css={styles.title}>Welcome to Our Application!</h1>
+        <p css={styles.subtitle}>
+          We're glad to have you here. Explore our features and enjoy your stay!
+        </p>
+        <button css={styles.button}>Get Started</button>
+      </div>
       <form onSubmit={handleSearch}>
         <input
           type="text"
@@ -62,7 +105,9 @@ function Search() {
           <h3>{result.trackName}</h3>
           <p>{result.artistName}</p>
           <p>{result.collectionName}</p>
-          <button onClick={() => handleAddToPlaylist(result)}>Add to Playlist</button>
+          <button onClick={() => handleAddToPlaylist(result)}>
+            Add to Playlist
+          </button>
         </div>
       ))}
     </div>

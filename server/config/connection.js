@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/vibez_db", {
- useNewUrlParser: true,
- useUnifiedTopology: true,
+//  useNewUrlParser: true,
+//  useUnifiedTopology: true,
 });
 mongoose.connection.on("connected", () => {
  console.log("Mongoose connected to local MongoDB");

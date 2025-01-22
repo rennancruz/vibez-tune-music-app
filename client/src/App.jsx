@@ -4,6 +4,7 @@ import Playlist from "./components/Playlist";
 import Search from "./components/Search";
 import Lyrics from "./components/Lyrics";
 import Login from "./Pages/Login";
+
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 
 const client = new ApolloClient({

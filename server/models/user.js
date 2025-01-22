@@ -35,8 +35,8 @@ const UserSchema = new Schema(
       ref: "Song",
 
     },
-  }
-);
+  ]
+});
 
 const User = model("user", UserSchema);
 

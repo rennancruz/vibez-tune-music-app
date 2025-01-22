@@ -27,16 +27,13 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    songs: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Songs",
-      },
-    ],
-  },
-  {
-    toJSON: {
-      virtuals: true,
+   
+
+  song: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Song",
+
     },
   }
 );

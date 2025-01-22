@@ -1,21 +1,20 @@
 const { Schema, model } = require("mongoose");
 
-const SongShema = new Schema({
-  songtitle: {
+const SongSchema = new Schema({
+  songTitle: {
     type: String,
     required: true,
   },
-  artisname: {
+  artistName: {
     type: String,
     required: true,
   },
   album: {
     type: String,
     required: true,
-    unique: true,
-  },
-  toJSON: {
-    virtuals: true,
   },
 });
-const User = model("Songs", SongShema);
+
+const Songs = model("Songs", SongSchema);
+
+module.exports = Songs;

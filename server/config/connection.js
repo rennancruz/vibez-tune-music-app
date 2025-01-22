@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/techmatchup"
+  'mongodb+srv://dbUser:dbUserPassword@cluster0.86ovs.mongodb.net/'
 );
 
 module.exports = mongoose.connection;

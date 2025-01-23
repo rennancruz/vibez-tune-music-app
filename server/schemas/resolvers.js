@@ -1,69 +1,105 @@
-const { User } = require("../models");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const fetch = require("node-fetch");
-const secret = "mysecretkey"; // Replace with environment variable
+const { User } = require('../models');
+const { AuthenticationError } = require('apollo-server-express');
+const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-    user: async () => {
-      return User.find({});
-    },
-    searchMusic: async (_, { term }) => {
-      try {
-        const response = await fetch(
-          `https://itunes.apple.com/search?term=${encodeURIComponent(term)}&entity=song&limit=25`
-        );
-        const data = await response.json();
-        return data.results.map((song) => ({
-          trackName: song.trackName,
-          artistName: song.artistName,
-          collectionName: song.collectionName,
-        }));
-      } catch (error) {
-        console.error("Error fetching music:", error);
-        throw new Error("Failed to fetch music");
-      }
-    },
-    playlist: async () => {
-      // Simulate playlist fetch from DB
-      return [];
-    },
-    lyrics: async (_, { artist, title }) => {
-      try {
-        const response = await fetch(
-          `https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(title)}`
-        );
-        const data = await response.json();
-        if (data.lyrics) {
-          return data.lyrics;
-        } else {
-          throw new Error("Lyrics not found");
+    // Fetch the current user's information
+    me: async (parent, args, context) => {
+      if (context.user) {
+        try {
+          const user = await User.findOne({ _id: context.user._id }).select('-__v -password');
+          if (!user) {
+            throw new AuthenticationError('User not found.');
+          }
+          return user;
+        } catch (err) {
+          console.error(err);
+          throw new AuthenticationError('Failed to fetch user data.');
         }
-      } catch (error) {
-        console.error("Error fetching lyrics:", error);
-        throw new Error("Failed to fetch lyrics");
       }
+      throw new AuthenticationError('You need to be logged in!');
     },
   },
   Mutation: {
-    login: async (_, { email, password }) => {
-      const user = await User.findOne({ email });
-      if (!user) throw new Error("User not found");
-      const isValid = await bcrypt.compare(password, user.password);
-      if (!isValid) throw new Error("Invalid credentials");
-      const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" });
-      return { ...user._doc, token };
+    // Add a new user and return a token
+    addUser: async (parent, { username, email, password }) => {
+      try {
+        const user = await User.create({ username, email, password });
+        const token = signToken(user);
+        return { token, user };
+      } catch (err) {
+        console.error(err);
+        throw new AuthenticationError('Failed to create a new user.');
+      }
     },
-    register: async (_, { username, email, password }) => {
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = await User.create({ username, email, password: hashedPassword });
-      const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" });
-      return { ...user._doc, token };
+    // Log in an existing user and return a token
+    login: async (parent, { email, password }) => {
+      try {
+        const user = await User.findOne({ email });
+        if (!user) {
+          throw new AuthenticationError('Invalid email or password.');
+        }
+        const correctPw = await user.isCorrectPassword(password);
+        if (!correctPw) {
+          throw new AuthenticationError('Invalid email or password.');
+        }
+        const token = signToken(user);
+        return { token, user };
+      } catch (err) {
+        console.error(err);
+        throw new AuthenticationError('Failed to log in.');
+      }
     },
-    addToPlaylist: async (_, { trackName, artistName }) => {
-      // Simulate adding song to DB
-      return { success: true, message: "Song added successfully." };
+    // Save a song to the user's savedSongs array
+    saveSong: async (parent, { songId, artist, title, album, coverImage, lyrics }, context) => {
+      if (context.user) {
+        try {
+          const updatedUser = await User.findByIdAndUpdate(
+            context.user._id,
+            {
+              $addToSet: {
+                savedSongs: {
+                  songId,
+                  artist,
+                  title,
+                  album: album || 'Unknown Album', // Default value for optional fields
+                  coverImage: coverImage || '', // Default value
+                  lyrics: lyrics || 'Lyrics not available.', // Default value
+                },
+              },
+            },
+            { new: true, runValidators: true }
+          );
+          return updatedUser;
+        } catch (err) {
+          console.error(err);
+          throw new Error('Failed to save the song.');
+        }
+      }
+      throw new AuthenticationError('You need to be logged in!');
+    },
+    // Remove a song from the user's savedSongs array
+    removeSong: async (parent, { songId }, context) => {
+      if (context.user) {
+        try {
+          const updatedUser = await User.findByIdAndUpdate(
+            context.user._id,
+            {
+              $pull: { savedSongs: { songId } },
+            },
+            { new: true }
+          );
+          if (!updatedUser) {
+            throw new Error('Failed to remove the song.');
+          }
+          return updatedUser;
+        } catch (err) {
+          console.error(err);
+          throw new Error('Failed to remove the song.');
+        }
+      }
+      throw new AuthenticationError('You need to be logged in!');
     },
   },
 };

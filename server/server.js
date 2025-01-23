@@ -1,41 +1,55 @@
-const express = require("express");
-const { ApolloServer } = require("@apollo/server");
-const { expressMiddleware } = require("@apollo/server/express4");
-const path = require("path");
-const routes = require("./Controller/routes");
-const { typeDefs, resolvers } = require("./schemas");
-const db = require("./config/connection");
-const cors = require("cors");
+const express = require('express');
+const { ApolloServer } = require('@apollo/server');
+const { expressMiddleware } = require('@apollo/server/express4');
+const cors = require('cors');
+const path = require('path');
+require('dotenv').config(); // Load environment variables
+const { authMiddleware } = require('./utils/auth');
+
+const { typeDefs, resolvers } = require('./schemas');
+const db = require('./config/connection');
 
 const PORT = process.env.PORT || 3001;
 const app = express();
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
 });
 
+// Start the Apollo server
 const startApolloServer = async () => {
   await server.start();
 
-  app.use(cors());
-  app.use(express.urlencoded({ extended: true }));
+  // Enable CORS for requests from the client
+  app.use(cors({
+    origin: process.env.CLIENT_ORIGIN || 'http://localhost:3000',
+    credentials: true,
+  }));
+
+  // Parse request bodies as JSON
+  app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
-  app.use(routes);
-  app.use("/graphql", expressMiddleware(server));
 
-  // if we're in production, serve client/dist as static assets
-  if (process.env.NODE_ENV === "production") {
-    app.use(express.static(path.join(__dirname, "../client/dist")));
+  // Attach the Apollo GraphQL middleware
+  app.use('/graphql', expressMiddleware(server, {
+    context: authMiddleware,
+  }));
 
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  // Serve static files in production
+  if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../client/dist')));
+
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
     });
   }
 
-  db.once("open", () => {
+  // Connect to MongoDB and start the server
+  db.once('open', () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
-      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+      console.log(`GraphQL playground available at http://localhost:${PORT}/graphql`);
     });
   });
 };

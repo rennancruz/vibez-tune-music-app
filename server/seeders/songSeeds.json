@@ -1,0 +1,44 @@
+[
+  {
+    "username": "musicLover1",
+    "songs": [
+      {
+        "songId": "1",
+        "artist": "Taylor Swift",
+        "title": "Love Story",
+        "album": "Fearless",
+        "coverImage": "https://example.com/love-story-cover.jpg",
+        "lyrics": "We were both young when I first saw you..."
+      },
+      {
+        "songId": "2",
+        "artist": "Ed Sheeran",
+        "title": "Shape of You",
+        "album": "Divide",
+        "coverImage": "https://example.com/shape-of-you-cover.jpg",
+        "lyrics": "The club isn't the best place to find a lover..."
+      }
+    ]
+  },
+  {
+    "username": "songFanatic",
+    "songs": [
+      {
+        "songId": "3",
+        "artist": "Adele",
+        "title": "Hello",
+        "album": "25",
+        "coverImage": "https://example.com/hello-cover.jpg",
+        "lyrics": "Hello, it's me. I was wondering..."
+      },
+      {
+        "songId": "4",
+        "artist": "Bruno Mars",
+        "title": "Uptown Funk",
+        "album": "Uptown Special",
+        "coverImage": "https://example.com/uptown-funk-cover.jpg",
+        "lyrics": "This hit, that ice cold Michelle Pfeiffer..."
+      }
+    ]
+  }
+]

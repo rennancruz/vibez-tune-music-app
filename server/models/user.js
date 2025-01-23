@@ -1,40 +1,72 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
+const bcrypt = require('bcrypt');
 
-// Email validation function
-const validateEmail = (email) => {
-  const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return regex.test(email);
-};
+// Define the Song schema for embedded documents
+const songSchema = new Schema(
+  {
+    songId: {
+      type: String,
+      required: true,
+    },
+    artist: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    album: {
+      type: String,
+    },
+    coverImage: {
+      type: String,
+    },
+    lyrics: {
+      type: String,
+    },
+  },
+  {
+    _id: false,
+  }
+);
 
-const UserSchema = new Schema({
+// Define the User schema
+const userSchema = new Schema({
   username: {
     type: String,
     required: true,
+    unique: true,
+    trim: true,
   },
   email: {
     type: String,
-    required: "Email address is required",
+    required: true,
     unique: true,
-    validate: [validateEmail, "Please fill a valid email address"],
-    match: [
-      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-      "Please fill a valid email address",
-    ],
-    maxlength: 50,
+    match: [/.+@.+\..+/, 'Must match a valid email address!'],
   },
   password: {
     type: String,
     required: true,
+    minlength: 5,
   },
-
-  song: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Song",
-    },
-  ],
+  savedSongs: [songSchema], // Embedded song documents
 });
 
-const User = model("User", UserSchema);
+// Pre-save middleware to hash passwords
+userSchema.pre('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
+  next();
+});
+
+// Instance method to check password validity
+userSchema.methods.isCorrectPassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
+const User = model('User', userSchema);
 
 module.exports = User;

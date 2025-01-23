@@ -1,35 +1,43 @@
-const { gql } = require("apollo-server-express");
+const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
+  type Song {
+    songId: String!
+    artist: String!
+    title: String!
+    album: String
+    coverImage: String
+    lyrics: String
+  }
+
   type User {
     _id: ID!
     username: String!
     email: String!
-    token: String
+    savedSongs: [Song]
   }
 
-  type Song {
-    trackName: String
-    artistName: String
-    collectionName: String
+  type Auth {
+    token: ID!
+    user: User
   }
 
   type Query {
-    user: [User]
-    searchMusic(term: String!): [Song]
-    playlist: [Song]
-    lyrics(artist: String!, title: String!): String
+    me: User
   }
 
   type Mutation {
-    login(email: String!, password: String!): User
-    register(username: String!, email: String!, password: String!): User
-    addToPlaylist(trackName: String!, artistName: String!): MutationResponse
-  }
-
-  type MutationResponse {
-    success: Boolean
-    message: String
+    login(email: String!, password: String!): Auth
+    addUser(username: String!, email: String!, password: String!): Auth
+    saveSong(
+      songId: String!
+      artist: String!
+      title: String!
+      album: String
+      coverImage: String
+      lyrics: String
+    ): User
+    removeSong(songId: String!): User
   }
 `;
 

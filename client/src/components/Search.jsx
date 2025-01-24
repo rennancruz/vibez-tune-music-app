@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
 import styled from "@emotion/styled";
+import logo from "./image.png";
 
 const SEARCH_MUSIC = gql`
   query searchMusic($term: String!) {
@@ -27,43 +28,82 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #e6e6fa; /* Light purple */
+  background: linear-gradient(to bottom right, rgb(226, 166, 243), rgb(68, 5, 85)); /* Gradient background */
   text-align: center;
+  padding: 20px;
 `;
 
 const WelcomeSection = styled.div`
-  background-color: rgb(88, 5, 110); /* Stronger purple */
-  padding: 40px; /* Add padding for better spacing */
-  border-radius: 30px; /* Optional: Round the corners */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: Add shadow for depth */
+  background-color: rgba(114, 11, 143, 0.9); 
+  padding: 40px;
+  border-radius: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+  backdrop-filter: blur(60px); 
 `;
 
 const Title = styled.h1`
   font-size: 2.5rem;
-  color: white; /* Change text color to white for better contrast */
+  color: white;
   margin-bottom: 20px;
 `;
 
 const Subtitle = styled.p`
   font-size: 1.2rem;
-  color: #f0f0f0; /* Light gray for better contrast */
+  color: rgb(245, 234, 234);
   margin-bottom: 40px;
 `;
 
 const Button = styled.button`
   padding: 10px 20px;
   font-size: 1rem;
-  color: white; /* Default text color */
-  background-color: rgb(105, 29, 175); /* Stronger purple */
+  color: white;
+  background-color: rgb(140, 56, 219);
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
 
   &:hover {
-    background-color: rgb(130, 29, 140); /* Darker shade for hover effect */
-    transform: scale(1.05); /* Slightly enlarge the button on hover */
+    background-color: rgb(130, 29, 140);
+    transform: scale(1.2);
     color: black;
+  }
+`;
+
+const SearchForm = styled.form`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  input {
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 200px;
+    transition: box-shadow 0.3s;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(140, 56, 219, 0.5);
+    }
+  }
+
+  button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: white;
+    background-color: rgb(140, 56, 219);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: rgb(130, 29, 140);
+    }
   }
 `;
 
@@ -94,34 +134,43 @@ function Search() {
   return (
     <Container>
       <WelcomeSection>
-        <Title>Welcome to Our Application!</Title>
-        <Subtitle>
-          We're glad to have you here. Explore our features and enjoy your stay!
-        </Subtitle>
-        <Button>Get Started</Button>
-      </WelcomeSection>
-
-      <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          placeholder="Search for music..."
-          value={term}
-          onChange={(e) => setTerm(e.target.value)}
+      <Title>Welcome to Our Application!</Title>
+        <img
+          src={logo}
+          alt="Description of the image"
+          style={{ width: "200px", marginBottom: "20px", borderRadius: "30px" }}
         />
-        <button type="submit">Search</button>
-      </form>
+        <Subtitle>We're glad to have you here!</Subtitle>
+        <Button>Get Started</Button>
+        
+        {/* Search Form */}
+        {/* <SearchForm onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="Search for music..."
+            value={term}
+            onChange={(e) => setTerm(e.target.value)}
+          />
+          <button type="submit">Search</button>
+        </SearchForm> */}
 
-      {loading && <p>Loading...</p>}
-      {searchResults.map((result, index) => (
-        <div key={index}>
-          <h3>{result.trackName}</h3>
-          <p>{result.artistName}</p>
-          <p>{result.collectionName}</p>
-          <button onClick={() => handleAddToPlaylist(result)}>
-            Add to Playlist
-          </button>
-        </div>
-      ))}
+        {/* Loading Indicator */}
+        {loading && <p>Loading...</p>}
+
+        {/* Search Results */}
+        {searchResults.length > 0 && (
+          <div style={{ marginTop: '20px' }}>
+            {searchResults.map((result, index) => (
+              <div key={index} style={{ marginBottom: '15px', padding: '10px', backgroundColor: 'rgba(255, 255, 255, 0.8)', borderRadius: '10px', boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)' }}>
+                <h3>{result.trackName}</h3>
+                <p>{result.artistName}</p>
+                <p>{result.collectionName}</p>
+                <Button onClick={() => handleAddToPlaylist(result)}>Add to Playlist</Button>
+              </div>
+            ))}
+          </div>
+        )}
+      </WelcomeSection>
     </Container>
   );
 }

@@ -46,15 +46,16 @@ function Search() {
     alert(`${track.trackName} added to playlist!`);
   };
   const styles = {
-    container: css`
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: #f0f4f8;
-      text-align: center;
-    `,
+    container: {
+      display: "flex",
+      background: " #f0f4f8",
+      // flexdirection: "column",
+      // alignitems: "center",
+      justifycontent: "center",
+      height: "100vh",
+      textalign: "center",
+    },
+
     title: css`
       font-size: 2.5rem;
       color: #333;
@@ -82,9 +83,9 @@ function Search() {
   };
   return (
     <div>
-      <div css={styles.container}>
-        <h1 css={styles.title}>Welcome to Our Application!</h1>
-        <p css={styles.subtitle}>
+      <div style={styles.container}>
+        <h1 style={styles.title}>Welcome to Our Application!</h1>
+        <p style={styles.subtitle}>
           We're glad to have you here. Explore our features and enjoy your stay!
         </p>
         <button css={styles.button}>Get Started</button>

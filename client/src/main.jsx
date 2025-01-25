@@ -12,6 +12,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App.jsx";
 import SearchSongs from "./pages/SearchSongs";
 import SavedSongs from "./pages/SavedSongs";
+import Search from "./components/Search.jsx";
+import LoginForm from "./components/LoginForm.jsx";
+import Login from "./Pages/Login.jsx";
 
 // Construct the GraphQL API endpoint
 const httpLink = createHttpLink({
@@ -47,7 +50,11 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <SearchSongs />, // Default route for searching songs
+        element: <Search />, // Default route for searching songs
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
       {
         path: "/saved",

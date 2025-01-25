@@ -129,7 +129,13 @@ function Search() {
           style={{ width: "200px", marginBottom: "20px", borderRadius: "30px" }}
         />
         <Subtitle>We're glad to have you here!</Subtitle>
-        <Button>Get Started</Button>
+        <Button
+          onClick={() => {
+            window.location.href = "/login";
+          }}
+        >
+          Get Started
+        </Button>
 
         {/* Search Form */}
         {/* <SearchForm onSubmit={handleSearch}>
@@ -173,7 +179,5 @@ function Search() {
     </Container>
   );
 }
-
-
 
 export default Search;

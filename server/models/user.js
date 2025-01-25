@@ -16,6 +16,10 @@ const songSchema = new Schema(
       type: String,
       required: true,
     },
+<<<<<<< HEAD
+  ]
+});
+=======
     album: {
       type: String,
     },
@@ -30,6 +34,7 @@ const songSchema = new Schema(
     _id: false,
   }
 );
+>>>>>>> 1167ebfc0f463441e78f426111556c28cecbda49
 
 // Define the User schema
 const userSchema = new Schema({

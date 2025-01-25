@@ -1,20 +1,37 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
-const SongSchema = new Schema({
-  songTitle: {
-    type: String,
-    required: true,
+// Define the Song schema
+const songSchema = new Schema(
+  {
+    songId: {
+      type: String,
+      required: true,
+      unique: true, // Ensures no duplicate song entries by songId
+    },
+    artist: {
+      type: String,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: true,
+    },
+    album: {
+      type: String,
+    },
+    coverImage: {
+      type: String,
+    },
+    lyrics: {
+      type: String,
+    },
   },
-  artistName: {
-    type: String,
-    required: true,
-  },
-  album: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    timestamps: true, // Adds createdAt and updatedAt fields
+  }
+);
 
-const Song = model("Song", SongSchema);
+// Create the Song model
+const Song = model('Song', songSchema);
 
 module.exports = Song;

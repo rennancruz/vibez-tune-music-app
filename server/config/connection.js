@@ -1,15 +1,11 @@
-const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/vibez_db", {
-//  useNewUrlParser: true,
-//  useUnifiedTopology: true,
+const mongoose = require('mongoose');
+require('dotenv').config(); // Load environment variables
+
+const connectionString = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/songs_db';
+
+mongoose.connect(connectionString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
-mongoose.connection.on("connected", () => {
- console.log("Mongoose connected to local MongoDB");
-});
-mongoose.connection.on("error", (err) => {
- console.error(`Mongoose connection error: ${err}`);
-});
-mongoose.connection.on("disconnected", () => {
- console.log("Mongoose disconnected");
-});
+
 module.exports = mongoose.connection;

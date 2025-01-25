@@ -1,43 +1,77 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
+const bcrypt = require('bcrypt');
 
-// Email validation function
-const validateEmail = (email) => {
-  const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-  return regex.test(email);
-};
-
-const UserSchema = new Schema(
+// Define the Song schema for embedded documents
+const songSchema = new Schema(
   {
-    username: {
+    songId: {
       type: String,
       required: true,
     },
-    email: {
-      type: String,
-      required: "Email address is required",
-      unique: true,
-      validate: [validateEmail, "Please fill a valid email address"],
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        "Please fill a valid email address",
-      ],
-      maxlength: 50,
-    },
-    password: {
+    artist: {
       type: String,
       required: true,
     },
-   
-
-  song: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Song",
-
+    title: {
+      type: String,
+      required: true,
     },
+<<<<<<< HEAD
   ]
 });
+=======
+    album: {
+      type: String,
+    },
+    coverImage: {
+      type: String,
+    },
+    lyrics: {
+      type: String,
+    },
+  },
+  {
+    _id: false,
+  }
+);
+>>>>>>> 1167ebfc0f463441e78f426111556c28cecbda49
 
-const User = model("user", UserSchema);
+// Define the User schema
+const userSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    match: [/.+@.+\..+/, 'Must match a valid email address!'],
+  },
+  password: {
+    type: String,
+    required: true,
+    minlength: 5,
+  },
+  savedSongs: [songSchema], // Embedded song documents
+});
+
+// Pre-save middleware to hash passwords
+userSchema.pre('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
+  next();
+});
+
+// Instance method to check password validity
+userSchema.methods.isCorrectPassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
+const User = model('User', userSchema);
 
 module.exports = User;

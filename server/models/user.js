@@ -27,7 +27,7 @@ const songSchema = new Schema(
     },
   },
   {
-    _id: false,
+    _id: false, // Disable _id for embedded song documents
   }
 );
 

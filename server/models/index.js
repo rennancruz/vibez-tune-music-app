@@ -1,4 +1,4 @@
-import User from './user'; 
-import Song from './Song'; 
+const User = require('./User'); // Updated import to match the file name
+const Song = require('./Song');
 
-export default { User, Song }; // Export both models
+module.exports = { User, Song }; // Export both models

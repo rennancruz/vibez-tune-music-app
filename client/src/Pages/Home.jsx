@@ -39,14 +39,7 @@ const Home = () => {
   }, [fetchUserData]);
 
   return (
-    <div
-      style={{
-        backgroundColor: "#1a1a1a",
-        minHeight: "100vh",
-        padding: "3rem 0",
-        color: "#fff",
-      }}
-    >
+    <div style={{ backgroundColor: "#1a1a1a", minHeight: "100vh", padding: "3rem 0", color: "#fff" }}>
       <Container>
         <div
           style={{
@@ -62,11 +55,7 @@ const Home = () => {
             autoPlay
             loop
             muted
-            style={{
-              maxWidth: "200px",
-              marginBottom: "1rem",
-              borderRadius: "15px",
-            }}
+            style={{ maxWidth: "200px", marginBottom: "1rem", borderRadius: "15px" }}
           ></video>
           {!Auth.loggedIn() ? (
             <>
@@ -74,19 +63,16 @@ const Home = () => {
                 <FontAwesomeIcon icon={faMusic} /> Welcome to Vibez Tune!
               </h1>
               <p className="mb-4">
-                Discover and save your favorite songs in your personalized
-                playlist.
+                Discover and save your favorite songs in your personalized playlist.
               </p>
             </>
           ) : (
             <>
               <h1 className="mb-4">
-                <FontAwesomeIcon icon={faUserCircle} /> Welcome back,{" "}
-                {userData?.username || "User"}!
+                <FontAwesomeIcon icon={faUserCircle} /> Welcome back, {userData?.username || "User"}!
               </h1>
               <p className="mb-4">
-                You have <strong>{userData?.savedSongs?.length || 0}</strong>{" "}
-                songs in your playlist.
+                You have <strong>{userData?.savedSongs?.length || 0}</strong> songs in your playlist.
               </p>
               <Button
                 href="/saved"

@@ -46,7 +46,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     errorElement: (
-      <h1 className="display-2 text-center mt-5" style={{ color: "#ff4b2b" }}>
+      <h1
+        className="display-2 text-center mt-5"
+        style={{ color: "#ff4b2b" }}
+      >
         Wrong page!
       </h1>
     ),

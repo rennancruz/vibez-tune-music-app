@@ -14,9 +14,7 @@ const LyricsPage = () => {
   const { loading, data } = useQuery(GET_ME, {
     fetchPolicy: "network-only",
     onCompleted: (data) => {
-      const foundSong = data.me.savedSongs.find(
-        (song) => song.songId === songId
-      );
+      const foundSong = data.me.savedSongs.find((song) => song.songId === songId);
       setSongData(foundSong || null);
     },
     onError: (err) => console.error("Error fetching song data:", err),
@@ -39,14 +37,7 @@ const LyricsPage = () => {
   }
 
   return (
-    <div
-      style={{
-        backgroundColor: "#1a1a1a",
-        minHeight: "100vh",
-        padding: "3rem 0",
-        color: "#fff",
-      }}
-    >
+    <div style={{ backgroundColor: "#1a1a1a", minHeight: "100vh", padding: "3rem 0", color: "#fff" }}>
       <Container>
         <div
           style={{

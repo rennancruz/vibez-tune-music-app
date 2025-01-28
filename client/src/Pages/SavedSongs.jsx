@@ -2,11 +2,7 @@ import { useState, useEffect } from "react";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 import { useQuery, useMutation } from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTrashAlt,
-  faMusic,
-  faExternalLinkAlt,
-} from "@fortawesome/free-solid-svg-icons";
+import { faTrashAlt, faMusic, faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons";
 
 import { GET_ME } from "../graphql/queries";
 import { REMOVE_SONG } from "../graphql/mutations";
@@ -41,9 +37,7 @@ const SavedSongs = () => {
       if (data) {
         setUserData((prevData) => ({
           ...prevData,
-          savedSongs: prevData.savedSongs.filter(
-            (song) => song.songId !== songId
-          ),
+          savedSongs: prevData.savedSongs.filter((song) => song.songId !== songId),
         }));
 
         removeSongId(songId);
@@ -75,14 +69,7 @@ const SavedSongs = () => {
   }
 
   return (
-    <div
-      style={{
-        backgroundColor: "#1a1a1a",
-        minHeight: "100vh",
-        color: "#fff",
-        padding: "3rem 0",
-      }}
-    >
+    <div style={{ backgroundColor: "#1a1a1a", minHeight: "100vh", color: "#fff", padding: "3rem 0" }}>
       <Container>
         <div
           style={{
@@ -130,23 +117,18 @@ const SavedSongs = () => {
                 <Card.Body className="d-flex flex-column">
                   <Card.Title>{song.title}</Card.Title>
                   <p className="small">Artist: {song.artist}</p>
-                  <p className="small">
-                    Album: {song.album || "Unknown Album"}
-                  </p>
+                  <p className="small">Album: {song.album || "Unknown Album"}</p>
                   <p className="small">
                     <strong>Lyrics:</strong>
                     <br />
-                    {song.lyrics
-                      ? truncateText(song.lyrics, 150)
-                      : "Lyrics not available."}
+                    {song.lyrics ? truncateText(song.lyrics, 150) : "Lyrics not available."}
                   </p>
                   <div className="mt-auto d-flex flex-column gap-2">
                     <Button
                       href={`/lyrics/${song.songId}`}
                       target="_blank"
                       style={{
-                        background:
-                          "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)", // Original gradient
+                        background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)", // Original gradient
                         border: "2px solid #4b0082", // Dark purple border
                         borderRadius: "50px",
                         color: "#fff",
@@ -156,12 +138,8 @@ const SavedSongs = () => {
                         transition: "transform 0.3s ease",
                       }}
                       className="btn-block"
-                      onMouseEnter={(e) =>
-                        (e.target.style.transform = "scale(1.05)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.transform = "scale(1)")
-                      }
+                      onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
+                      onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
                     >
                       <FontAwesomeIcon icon={faExternalLinkAlt} /> View Lyrics
                     </Button>
@@ -172,8 +150,7 @@ const SavedSongs = () => {
                       )}`}
                       target="_blank"
                       style={{
-                        background:
-                          "linear-gradient(135deg, #ff0080 0%, #8000ff 100%)", // Pink to Purple gradient
+                        background: "linear-gradient(135deg, #ff0080 0%, #8000ff 100%)", // Pink to Purple gradient
                         border: "2px solid #4b0082", // Dark purple border
                         borderRadius: "50px",
                         color: "#fff",
@@ -183,21 +160,15 @@ const SavedSongs = () => {
                         transition: "transform 0.3s ease",
                       }}
                       className="btn-block"
-                      onMouseEnter={(e) =>
-                        (e.target.style.transform = "scale(1.05)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.transform = "scale(1)")
-                      }
+                      onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
+                      onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
                     >
-                      <FontAwesomeIcon icon={faExternalLinkAlt} /> Watch on
-                      YouTube
+                      <FontAwesomeIcon icon={faExternalLinkAlt} /> Watch on YouTube
                     </Button>
 
                     <Button
                       style={{
-                        background:
-                          "linear-gradient(135deg, #ff0080 0%, #8000ff 100%)", // Pink to Purple gradient
+                        background: "linear-gradient(135deg, #ff0080 0%, #8000ff 100%)", // Pink to Purple gradient
                         border: "2px solid #4b0082", // Dark purple border
                         borderRadius: "50px",
                         color: "#fff",
@@ -208,12 +179,8 @@ const SavedSongs = () => {
                       }}
                       onClick={() => handleDeleteSong(song.songId)}
                       className="btn-block"
-                      onMouseEnter={(e) =>
-                        (e.target.style.transform = "scale(1.05)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.transform = "scale(1)")
-                      }
+                      onMouseEnter={(e) => (e.target.style.transform = "scale(1.05)")}
+                      onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
                     >
                       <FontAwesomeIcon icon={faTrashAlt} /> Delete this Song
                     </Button>

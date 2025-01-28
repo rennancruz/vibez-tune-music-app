@@ -9,6 +9,8 @@ import {
   Modal,
 } from "react-bootstrap";
 import { useMutation, useLazyQuery } from "@apollo/client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faSave, faMusic } from "@fortawesome/free-solid-svg-icons";
 import Auth from "../utils/auth";
 import { SAVE_SONG } from "../graphql/mutations";
 import { GET_ME } from "../graphql/queries";
@@ -32,7 +34,6 @@ const SearchSongs = () => {
     },
   });
 
-  // Fetch saved songs on component mount if the user is logged in
   useEffect(() => {
     if (Auth.loggedIn()) {
       getUserData();
@@ -64,15 +65,14 @@ const SearchSongs = () => {
 
       const uniqueResults = new Map();
       data.results.forEach((result) => {
-        const uniqueKey =
-          `${result.trackName}-${result.artistName}-${result.collectionName}`.toLowerCase();
+        const uniqueKey = `${result.trackName}-${result.artistName}-${result.collectionName}`.toLowerCase();
         if (!uniqueResults.has(uniqueKey)) {
           uniqueResults.set(uniqueKey, {
             songId: uniqueKey,
             trackName: result.trackName,
             artistName: result.artistName,
             albumName: result.collectionName,
-            coverImage: result.artworkUrl100, // Use iTunes album cover
+            coverImage: result.artworkUrl100,
           });
         }
       });
@@ -115,7 +115,7 @@ const SearchSongs = () => {
           title: song.trackName,
           artist: song.artistName,
           album: song.albumName || "Unknown Album",
-          coverImage: song.coverImage || "", // Default empty string if no cover image
+          coverImage: song.coverImage || "",
           lyrics,
         },
       });
@@ -131,65 +131,110 @@ const SearchSongs = () => {
   };
 
   return (
-    <>
-      <div className="text-light bg-dark p-5">
-        <Container>
-          <h1>Search for Songs!</h1>
-          <Form onSubmit={handleFormSubmit}>
-            <Row>
-              <Col xs={12} md={8}>
-                <Form.Control
-                  name="searchInput"
-                  value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
-                  type="text"
-                  size="lg"
-                  placeholder="Search for a song or artist"
-                />
-              </Col>
-              <Col xs={12} md={4}>
-                <Button type="submit" variant="success" size="lg">
-                  Submit Search
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-        </Container>
-      </div>
-
+    <div style={{ backgroundColor: "#1a1a1a", minHeight: "100vh", padding: "3rem 0", color: "#fff" }}>
       <Container>
-        <h2 className="pt-5">
+        <div
+          style={{
+            background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
+            borderRadius: "15px",
+            padding: "3rem",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)",
+            textAlign: "center",
+          }}
+        >
+          <h1 className="mb-4">
+            <FontAwesomeIcon icon={faMusic} /> Search for Songs
+          </h1>
+          <Form onSubmit={handleFormSubmit} className="d-flex justify-content-center">
+            <Form.Control
+              name="searchInput"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              type="text"
+              size="lg"
+              placeholder="Search for a song or artist"
+              style={{
+                borderRadius: "50px",
+                padding: "1rem",
+                marginRight: "1rem",
+                maxWidth: "500px",
+              }}
+            />
+            <Button
+              type="submit"
+              variant="light"
+              size="lg"
+              style={{
+                borderRadius: "50px",
+                padding: "0.75rem 2rem",
+                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+              }}
+            >
+              <FontAwesomeIcon icon={faSearch} /> Search
+            </Button>
+          </Form>
+        </div>
+      </Container>
+
+      <Container className="py-5">
+        <h2 className="text-center mb-4">
           {searchedSongs.length
             ? `Viewing ${searchedSongs.length} result(s):`
             : "Search for a song to begin"}
         </h2>
-        <Row>
+        <Row className="g-4">
           {searchedSongs.map((song) => (
-            <Col md="4" key={song.songId}>
-              <Card border="dark" className="mb-4">
+            <Col md="4" key={song.songId} className="d-flex align-items-stretch">
+              <Card
+                className="mb-4 shadow flex-grow-1"
+                style={{
+                  background: "#292929",
+                  color: "#fff",
+                  borderRadius: "15px",
+                  overflow: "hidden",
+                }}
+              >
                 {song.coverImage && (
                   <Card.Img
                     variant="top"
                     src={song.coverImage}
                     alt={`${song.trackName} cover`}
+                    style={{ objectFit: "cover", height: "200px" }}
                   />
                 )}
-                <Card.Body>
+                <Card.Body className="d-flex flex-column">
                   <Card.Title>{song.trackName}</Card.Title>
                   <p className="small">Artist: {song.artistName}</p>
-                  <p className="small">
-                    Album: {song.albumName || "Unknown Album"}
-                  </p>
+                  <p className="small">Album: {song.albumName || "Unknown Album"}</p>
                   {Auth.loggedIn() && (
                     <Button
-                      disabled={savedSongIds.includes(song.songId)}
-                      className="btn-block btn-info"
-                      onClick={() => handleSaveSong(song)}
-                    >
-                      {savedSongIds.includes(song.songId)
-                        ? "This song is saved!"
-                        : "Save this Song!"}
-                    </Button>
+                    disabled={savedSongIds.includes(song.songId)}
+                    style={{
+                      background: savedSongIds.includes(song.songId)
+                        ? "linear-gradient(135deg, #ff0080, #8000ff)" // Pink to Purple gradient
+                        : "linear-gradient(135deg, #6a11cb, #2575fc)", // Original gradient
+                      border: "2px solid #4b0082", // Dark purple border
+                      borderRadius: "50px",
+                      color: "#fff",
+                      marginTop: "auto",
+                      padding: "0.75rem 1.5rem",
+                      fontWeight: "bold",
+                      transition: "transform 0.3s ease",
+                      textDecoration: "none",
+                      boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.transform = "scale(1.05)";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.transform = "scale(1)";
+                    }}
+                    onClick={() => handleSaveSong(song)}
+                    className="btn-block"
+                  >
+                    <FontAwesomeIcon icon={faSave} />{" "}
+                    {savedSongIds.includes(song.songId) ? "Saved" : "Save Song"}
+                  </Button>
                   )}
                 </Card.Body>
               </Card>
@@ -199,17 +244,32 @@ const SearchSongs = () => {
       </Container>
 
       <Modal show={showModal} onHide={() => setShowModal(false)}>
-        <Modal.Header closeButton>
+        <Modal.Header
+          closeButton
+          style={{
+            background: "linear-gradient(135deg, #6a11cb, #2575fc)",
+            color: "#fff",
+          }}
+        >
           <Modal.Title>Notification</Modal.Title>
         </Modal.Header>
         <Modal.Body>{modalContent}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
+        <Modal.Footer
+          style={{
+            background: "#1a1a1a",
+            color: "#fff",
+          }}
+        >
+          <Button
+            variant="light"
+            onClick={() => setShowModal(false)}
+            style={{ borderRadius: "50px" }}
+          >
             Close
           </Button>
         </Modal.Footer>
       </Modal>
-    </>
+    </div>
   );
 };
 

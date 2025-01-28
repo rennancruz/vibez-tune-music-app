@@ -2,12 +2,7 @@ import { useState } from "react";
 import { Form, Button, Alert, Container } from "react-bootstrap";
 import { useMutation } from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faSignInAlt,
-  faEnvelope,
-  faLock,
-  faPaperPlane,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSignInAlt, faEnvelope, faLock, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
 import { LOGIN_USER } from "../graphql/mutations";
 import Auth from "../utils/auth";
@@ -66,14 +61,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div
-      style={{
-        backgroundColor: "#1a1a1a",
-        minHeight: "100vh",
-        padding: "3rem 0",
-        color: "#fff",
-      }}
-    >
+    <div style={{ backgroundColor: "#1a1a1a", minHeight: "100vh", padding: "3rem 0", color: "#fff" }}>
       <Container>
         <div
           style={{

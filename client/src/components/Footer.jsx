@@ -1,10 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+
 const Footer = () => {
   const hoverEffect = (e, scale) => {
     e.target.style.transform = scale;
   };
+
   const styles = {
     footer: {
       padding: "2rem 0",
@@ -35,11 +37,9 @@ const Footer = () => {
       fontSize: "1rem",
     },
   };
+
   return (
-    <footer
-      style={styles.footer}
-      className="d-flex flex-column align-items-center"
-    >
+    <footer style={styles.footer} className="d-flex flex-column align-items-center">
       <div style={styles.creators}>
         Created with{" "}
         <FontAwesomeIcon icon={faHeart} className="text-danger mx-1" /> by
@@ -67,4 +67,5 @@ const Footer = () => {
     </footer>
   );
 };
+
 export default Footer;

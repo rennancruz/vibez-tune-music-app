@@ -1,4 +1,4 @@
-const User = require('./User'); // Adjust if paths differ
-const Song = require('./Song'); // Add this line to import Song
+import User from './user'; 
+import Song from './Song'; 
 
-module.exports = { User, Song }; // Export both models
+export default { User, Song }; // Export both models

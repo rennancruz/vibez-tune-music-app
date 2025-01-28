@@ -21,12 +21,7 @@ The application is deployed using **Render** with a **MongoDB Atlas** database, 
 
 ## Demo
 
-![Vibez Tune Music App Screenshot](../vibez-tune-music-app/client/public/assets/screenshot01.png)
-![Vibez Tune Music App Screenshot](../vibez-tune-music-app/client/public/assets/screenshot02.png)
-![Vibez Tune Music App Screenshot](../vibez-tune-music-app/client/public/assets/screenshot03.png)
-![Vibez Tune Music App Screenshot](../vibez-tune-music-app/client/public/assets/screenshot04.png)
-
-[Live Demo](link placeholder)
+[Live Demo](https://vibez-tune-music-app.onrender.com)
 
 ## Concepts Covered
 

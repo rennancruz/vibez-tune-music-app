@@ -127,3 +127,4 @@ The application is deployed using **Render** with a **MongoDB Atlas** database, 
 The **Vibez Tune Music App** provides an engaging and interactive platform for users to explore music, view lyrics, and create a personalized song library. With its GraphQL-powered backend and seamless frontend experience, the app showcases the power of the MERN stack. The integration of the Lyrics.ovh API ensures real-time lyric fetching, while deployment on Render guarantees reliability and scalability.
 
 Start vibing to your favorite tunes with the **Vibez Tune Music App** today!
+.
